@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>테스트 노래책</title>
+    <!-- Tailwind CSS CDN을 사용하여 스타일링을 적용합니다 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            /* 스크롤바가 생길 때 레이아웃이 밀리는 현상을 방지하기 위해 
+               항상 세로 스크롤바가 보이도록 설정합니다. */
+            overflow-y: scroll;
+        }
+        /* 클립보드 복사 알림창 스타일 */
+        .toast-message {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(34, 197, 94, 0.9);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 9999px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            z-index: 1000;
+        }
+        .toast-message.show {
+            opacity: 1;
+        }
+        /* 노래 카드 호버 시 크기 확대 효과 조정 */
+        .card-hover-scale:hover {
+            transform: scale(1.017); /* 이전 105% 확대 폭(5%)의 1/3인 약 1.7% 확대 (100% + 1.7% = 101.7%) */
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200 min-h-screen flex flex-col">
+
+    <!-- 메인 컨테이너 -->
+    <div class="container mx-auto px-4 py-8 max-w-[800px] flex-grow relative">
+        <!-- 좌측 상단 버튼 (메인 컨테이너 내부, 이미지 위) -->
+        <div class="absolute top-12 left-8 flex space-x-2 z-10">
+            <!-- 공지사항 버튼 -->
+            <button id="show-modal-btn" class="p-3 bg-red-600 rounded-full shadow-lg text-white hover:bg-red-700 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+            </button>
+
+            <!-- 숙제 버튼 -->
+            <button id="show-homework-modal-btn" class="py-3 px-6 bg-blue-600 rounded-full shadow-lg text-white hover:bg-blue-700 transition-colors flex items-center justify-center">
+                <span class="text-sm font-semibold">업보</span>
+            </button>
+        </div>
+
+        <!-- 상단 이미지 및 검색바 섹션 -->
+        <header class="mb-12">
+            <div class="relative w-full rounded-3xl overflow-hidden shadow-lg h-80">
+                <img 
+                    src="https://github.com/greatmoth/testpage2/blob/main/top.png?raw=true" 
+                    alt="음악 홈페이지 배너 이미지"
+                    class="w-full h-full object-cover object-right"
+                >
+                <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                    <div class="text-center p-4 pt-12">
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4">924의 노래책</h1>
+                        <p class="text-lg text-gray-300 mb-4">어려움 태그가 붙은 곡은 도중에 끌 수 있습니다<br>자세한건 우측 하단 공지를 확인해 주세요</p> <!-- mb-8을 mb-4로 변경했습니다. -->
+                        <!-- 검색바 -->
+                        <div class="relative w-full max-w-xl mx-auto">
+                            <input 
+                                type="text" 
+                                id="search-input"
+                                placeholder="노래, 아티스트를 검색하세요..." 
+                                class="w-full bg-gray-800 text-gray-100 placeholder-gray-400 py-3 pl-5 pr-12 rounded-full border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+                            >
+                            <button class="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full text-gray-400 hover:text-blue-400 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- 카테고리 선택 섹션 (검색바 아래로 이동) -->
+        <section class="mb-8">
+            <div class="flex flex-wrap justify-center gap-1 sm:gap-2">
+                <button data-category="All" class="category-btn bg-blue-500 text-white font-semibold py-2 px-6 rounded-full transition-colors hover:bg-blue-600">
+                    전체
+                </button>
+                <button data-category="여자 아이돌" class="category-btn bg-gray-700 text-gray-200 font-semibold py-2 px-6 rounded-full transition-colors hover:bg-gray-600">
+                    여자 아이돌
+                </button>
+                <button data-category="남자 아이돌" class="category-btn bg-gray-700 text-gray-200 font-semibold py-2 px-6 rounded-full transition-colors hover:bg-gray-600">
+                    남자 아이돌
+                </button>
+                <button data-category="인디/힙합" class="category-btn bg-gray-700 text-gray-200 font-semibold py-2 px-6 rounded-full transition-colors hover:bg-gray-600">
+                    인디/힙합
+                </button>
+                <button data-category="팝송" class="category-btn bg-gray-700 text-gray-200 font-semibold py-2 px-6 rounded-full transition-colors hover:bg-gray-600">
+                    팝송
+                </button>
+                <button data-category="제이팝" class="category-btn bg-gray-700 text-gray-200 font-semibold py-2 px-6 rounded-full transition-colors hover:bg-gray-600">
+                    제이팝
+                </button>
+                <button data-category="업보목록" class="category-btn bg-orange-700 text-gray-200 font-semibold py-2 px-6 rounded-full transition-colors hover:bg-orange-600">
+                    업보목록
+                </button>
+            </div>
+        </section>
+
+        <!-- 노래 목록 섹션 -->
+        <section>
+            
+            <!-- 노래 카드가 동적으로 추가될 영역 -->
+            <div class="flex flex-col gap-4 max-w-[800px] mx-auto" id="song-list">
+                <!-- JavaScript로 동적으로 노래 카드를 생성합니다 -->
+            </div>
+        </section>
+    </div>
+
+    <!-- 공지사항 모달 -->
+    <!-- 초기에는 hidden 클래스로 숨겨져 있습니다. -->
+    <div id="notice-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 hidden">
+        <div class="bg-gray-800 text-gray-200 rounded-3xl shadow-2xl p-8 max-w-xl w-full relative">
+            <h2 class="text-3xl font-bold text-blue-400 mb-4">📢 공지사항</h2>
+            <div class="text-lg space-y-3">
+                <p>안녕하세요! 홈페이지에 방문해주셔서 감사합니다.</p>
+                <p>현재 노래책 데이터가 업데이트 중입니다. 불편하시더라도 양해 부탁드립니다.</p>
+                <p>새로운 곡 신청은 언제든 가능합니다. 😊</p>
+            </div>
+            <!-- 모달 닫기 버튼 -->
+            <button id="close-modal" class="absolute top-4 right-4 p-2 text-gray-400 hover:text-white transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+    </div>
+    
+    <!-- 숙제 모달 -->
+    <!-- 새로운 모달입니다. 초기에는 hidden 클래스로 숨겨져 있습니다. -->
+    <div id="homework-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 hidden">
+        <div class="bg-gray-800 text-gray-200 rounded-3xl shadow-2xl p-8 max-w-xl w-full relative">
+            <h2 class="text-3xl font-bold text-green-400 mb-4">📝 업보 가격표</h2>
+            <div class="text-lg space-y-3">
+                <ul class="list-disc list-inside ml-4">
+                    <li>노래 연습: 50,000 치즈</li>
+                    <li>
+                        녹음: 200,000 치즈
+                        <!-- 외국곡 항목의 글씨 크기를 키우고, mt-[-0.25rem]으로 마진을 음수로 설정하여 더 가깝게 만듭니다. -->
+                        <div class="text-base text-gray-500 pl-8 mt-[-0.25rem]">외국곡: +50,000 치즈</div>
+                    </li>
+                    <li>애교곡: 1,000,000 치즈</li>
+                </ul>
+            </div>
+            <!-- 모달 닫기 버튼 -->
+            <button id="close-homework-modal" class="absolute top-4 right-4 p-2 text-gray-400 hover:text-white transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
+
+
+    <!-- 클립보드 복사 성공 알림 메시지 (숨김 상태) -->
+    <div id="toast" class="toast-message"></div>
+
+    <!-- 동적 노래 목록 생성 및 검색 기능을 위한 JavaScript 코드 -->
+    <script>
+        // DOM 콘텐츠가 모두 로드된 후 스크립트를 실행합니다.
+        document.addEventListener('DOMContentLoaded', () => {
+            // 모든 노래 데이터를 한 곳에 정의합니다.
+            // difficulty와 cheeseTag는 '업보목록'을 제외하고 랜덤으로 할당될 것이므로 초기 데이터에서는 생략합니다.
+            const allSongsData = [
+                // 남자 아이돌
+                { title: 'Dynamite', artist: 'BTS', category: '남자 아이돌', key: 'G#', bpm: 114, memo:"test" },
+                { title: 'Idol', artist: 'BTS', category: '남자 아이돌', key: 'A', bpm: 126 },
+                { title: 'Seven (feat. Latto)', artist: '정국', category: '남자 아이돌', key: 'Em', bpm: 100 },
+                { title: 'Get A Guitar', artist: 'RIIZE', category: '남자 아이돌', key: 'Cm', bpm: 100 },
+                { title: 'Love 119', artist: 'RIIZE', category: '남자 아이돌', key: 'Fm', bpm: 120 },
+                // 여자 아이돌
+                { title: 'Hype Boy', artist: '뉴진스 (New Jeans)', category: '여자 아이돌', key: 'G', bpm: 120 },
+                { title: 'Cookie', artist: '뉴진스 (New Jeans)', category: '여자 아이돌', key: 'C', bpm: 110 },
+                { title: 'Hurt', artist: '뉴진스 (New Jeans)', category: '여자 아이돌', key: 'Am', bpm: 90 },
+                { title: 'Ditto', artist: '뉴진스 (New Jeans)', category: '여자 아이돌', key: 'C#', bpm: 134 },
+                { title: 'OMG', artist: '뉴진스 (New Jeans)', category: '여자 아이돌', key: 'F', bpm: 120 },
+                { title: 'New Jeans', artist: '뉴진스 (New Jeans)', category: '여자 아이돌', key: 'A', bpm: 100 },
+                { title: 'Super Shy', artist: '뉴진스 (New Jeans)', category: '여자 아이돌', key: 'G#', bpm: 125 },
+                { title: 'ETA', artist: '뉴진스 (New Jeans)', category: '여자 아이돌', key: 'Am', bpm: 130 },
+                { title: 'Cool With You', artist: '뉴진스(New Jeans)', category: '여자 아이돌', key: 'C#m', bpm: 100 },
+                { title: 'How Sweet', artist: '뉴진스(New Jeans)', category: '여자 아이돌', key: 'G', bpm: 110 },
+                { title: '행복(Happiness)', artist: '레드벨벳 (Red Velvet)', category: '여자 아이돌', key: 'F#', bpm: 120, difficulty: '어려움' },
+                { title: 'Ice Cream Cake', artist: '레드벨벳 (Red Velvet)', category: '여자 아이돌', key: 'Fm', bpm: 120 },
+                { title: 'Something Kinda Crazy', artist: '레드벨벳 (Red Velvet)', category: '여자 아이돌', key: 'Em', bpm: 100 },
+                { title: '사탕', artist: '레드벨벳 (Red Velvet)', category: '여자 아이돌', key: 'C', bpm: 110, difficulty: '2절' },
+                { title: '러시안 룰렛(Russian Roulette)', artist: '레드벨벳 (Red Velvet)', category: '여자 아이돌', key: 'G#', bpm: 125, difficulty: '어려움' },
+                { title: '빨간 맛(Red Flavor)', artist: '레드벨벳 (Red Velvet)', category: '여자 아이돌', key: 'A', bpm: 126 },
+                { title: '피카부(Peek-A-Boo)', artist: '레드벨벳 (Red Velvet)', category: '여자 아이돌', key: 'Dm', bpm: 120 },
+                { title: 'Power Up', artist: '레드벨벳 (Red Velvet)', category: '여자 아이돌', key: 'Cm', bpm: 100, difficulty: '어려움' },
+                // 업보목록
+                { title: 'love me or leave me', artist: '데이식스', category: '업보목록', key: '?', bpm: '?', upboType: '녹음' },
+                { title: '군청', artist: '요아소비', category: '업보목록', key: '?', bpm: '?', upboType: '녹음' },
+                { title: '아 왜', artist: '데이식스', category: '업보목록', key: '?', bpm: '?', upboType: '녹음' },
+                { title: 'I Like U', artist: 'NIKI', category: '업보목록', key: '?', bpm: '?', upboType: '노래 연습' },
+                { title: '여봉봉', artist: '아울', category: '업보목록', key: '?', bpm: '?', upboType: '애교곡' },
+                // 제이팝
+                { title: '밤을 달리다', artist: 'YOASOBI', category: '제이팝', difficulty: '1절', cheeseTag: '5,000치즈', key: 'F#', bpm: 130 },
+                { title: 'Hey-day 광상곡', artist: 'After Glow', category: '제이팝', difficulty: '2절', cheeseTag: '5,000치즈', key: 'A', bpm: 200 },
+                { title: 'R.I.O.T', artist: 'Raise A Suilen', category: '제이팝', difficulty: '1절', cheeseTag: '5,000치즈', key: 'Dm', bpm: 190 },
+                { title: '체리밤', artist: 'SILENT SIREN', category: '제이팝', difficulty: '1절', cheeseTag: '5,000치즈', key: 'G', bpm: 130 },
+                { title: 'God Knows...', artist: 'Shoko nakagawa', category: '제이팝', difficulty: '2절', cheeseTag: '5,000치즈', key: 'F#m', bpm: 175 },
+                { title: '꼭두각시 피에로', artist: '하츠네 미쿠', category: '제이팝', difficulty: '어려움', cheeseTag: '5,000치즈', key: 'Cm', bpm: 120 },
+                { title: '로미오와 신데렐라', artist: '하츠네 미쿠', category: '제이팝', difficulty: '2절', cheeseTag: '5,000치즈', key: 'C', bpm: 120 },
+                { title: '무희', artist: '바운디', category: '제이팝', difficulty: null, cheeseTag: '5,000치즈', key: 'Am', bpm: 128 },
+                { title: 'KICK BACK', artist: '요네즈 켄시', category: '제이팝', difficulty: '어려움', cheeseTag: '5,000치즈', key: 'Dm', bpm: 100 },
+                { title: 'Lady', artist: '요네즈 켄시', category: '제이팝', difficulty: null, cheeseTag: '5,000치즈', key: 'Bb', bpm: 120 },
+                { title: '선잠', artist: '레이나', category: '제이팝', difficulty: null, cheeseTag: '5,000치즈', key: 'C', bpm: 70 },
+                { title: 'finale', artist: 'eill', category: '제이팝', difficulty: '1절', cheeseTag: '5,000치즈', key: 'F', bpm: 100 },
+                // 팝송
+                { title: 'Tango', artist: 'Abir', category: '팝송', difficulty: '1절', cheeseTag: '5,000치즈', key: 'F#m', bpm: 145 },
+                { title: 'Someone Like You', artist: 'Adle', category: '팝송', difficulty: '어려움', cheeseTag: '5,000치즈', key: 'A', bpm: 135 },
+                { title: 'If I Ain\'t Got You', artist: 'Alicia Keys', category: '팝송', difficulty: '2절', cheeseTag: '5,000치즈', key: 'G', bpm: 118 },
+                { title: 'How Far I\'ll Go', artist: 'Auli\'i Cravalho', category: '팝송', difficulty: null, cheeseTag: '5,000치즈', key: 'E', bpm: 90 },
+                { title: 'Watermelon Sugar', artist: 'Harry Styles', category: '팝송', difficulty: null, cheeseTag: '5,000치즈', key: 'Dm', bpm: 96 },
+                { title: 'Let It Go', artist: 'Idina Menzel', category: '팝송', difficulty: '2절', cheeseTag: '5,000치즈', key: 'G', bpm: 68 },
+                { title: 'Part of Your World', artist: 'Jodi Benson', category: '팝송', difficulty: null, cheeseTag: '5,000치즈', key: 'Gb', bpm: 106 },
+                { title: 'Teenage Fantasy', artist: 'Jorja Smith', category: '팝송', difficulty: null, cheeseTag: '5,000치즈', key: 'Em', bpm: 88 },
+                { title: 'When Will My Life Begin', artist: 'Mandy Moore', category: '팝송', difficulty: '1절', cheeseTag: '5,000치즈', key: 'E', bpm: 120 },
+                { title: 'Speechless', artist: 'Naomi Scott', category: '팝송', difficulty: '1절', cheeseTag: '5,000치즈', key: 'Am', bpm: 140 },
+                { title: 'I Love You 3000', artist: 'Stephanie Poetri', category: '팝송', difficulty: null, cheeseTag: '5,000치즈', key: 'F#', bpm: 180 },
+                { title: 'Whiskey and Morphine', artist: 'Alexander Jean', category: '팝송', difficulty: '어려움', cheeseTag: '5,000치즈', key: 'Dm', bpm: 120 },
+                { title: 'can\'t take my eyes off you', artist: 'morten harket', category: '팝송', difficulty: null, cheeseTag: '5,000치즈', key: 'F#', bpm: 180 },
+                { title: 'Paper Hearts', artist: 'Tori Kelly', category: '팝송', difficulty: null, cheeseTag: '5,000치즈', key: 'Cm', bpm: 70 },
+                // 인디/힙합
+                { title: '더 좋아한 내가 진 거야', artist: '015B', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '사랑은 은하수 다방에서', artist: '10cm', category: '인디/힙합', key: 'E', bpm: 122 },
+                { title: '스토커', artist: '10cm', category: '인디/힙합', key: 'Db/F', bpm: 68 },
+                { title: '봄이 좋냐?', artist: '10cm', category: '인디/힙합', key: 'Db/F', bpm: 94 },
+                { title: 'Pet', artist: '10cm', category: '인디/힙합', key: 'C#', bpm: 126 },
+                { title: '폰서트', artist: '10cm', category: '인디/힙합', key: 'A', bpm: 108 },
+                { title: '가끔 미치도록 네가 안고 싶어질 때가 있어', artist: '가을방학', category: '인디/힙합', key: 'E/A', bpm: 78 },
+                { title: '지금껏 그랬듯 앞으로도 계속', artist: '구름', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '더 나은 사람', artist: '구름', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '오늘 뭐 했는지 말해 봐', artist: '권진아', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '우결', artist: '기리보이 (GRBoy)', category: '인디/힙합', difficulty: '2절', key: '?', bpm: '?' },
+                { title: '호구', artist: '기리보이 (GRBoy)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '이혼서류', artist: '기리보이 (GRBoy)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '교통정리', artist: '기리보이 (GRBoy)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '예쁘잖아', artist: '기리보이 (GRBoy)', category: '인디/힙합', key: '?', bpm: 83 },
+                { title: '어떤 종말', artist: '김필선', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: 'Phobia', artist: '다운 (Dwn)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '김밥', artist: '더 자두', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: 'josee!', artist: '데이먼스 이어 (Damons year)', category: '인디/힙합', key: 'Bb', bpm: 'Slow' },
+                { title: 'Congratulations', artist: '데이식스 (DAY6)', category: '인디/힙합', difficulty: '1절', key: 'Eb', bpm: 180 },
+                { title: '아 왜 (I Wait)', artist: '데이식스 (DAY6)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '예뻤어', artist: '데이식스 (DAY6)', category: '인디/힙합', key: 'Fm', bpm: 168 },
+                { title: '어떻게 말해', artist: '데이식스 (DAY6)', category: '인디/힙합', difficulty: '어려움', key: '?', bpm: 184 },
+                { title: '장난 아닌데', artist: '데이식스 (DAY6)', category: '인디/힙합', key: '?', bpm: 124 },
+                { title: 'Dance Dance', artist: '데이식스 (DAY6)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: 'Be Lazy', artist: '데이식스 (DAY6)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '완전 멋지잖아', artist: '데이식스 (DAY6)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '365247', artist: '데이식스 (DAY6)', category: '인디/힙합', difficulty: '어려움', key: '?', bpm: '?' },
+                { title: 'Not mine', artist: '데이식스 (DAY6)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: 'Zombie', artist: '데이식스 (DAY6)', category: '인디/힙합', key: 'C', bpm: 122 },
+                { title: 'Afraid', artist: '데이식스 (DAY6)', category: '인디/힙합', difficulty: '2절', key: '?', bpm: '?' },
+                { title: 'Love me or Leave me', artist: '데이식스 (DAY6)', category: '인디/힙합', key: '?', bpm: 126 },
+                { title: 'lovemore.', artist: '도시 (dosii)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: 'OHAYO MY NIGHT', artist: '디핵', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: 'I Love It', artist: '딘 (DEAN)', category: '인디/힙합', key: '?', bpm: 124 },
+                { title: '풀어 (Pour Up)', artist: '딘 (DEAN)', category: '인디/힙합', key: 'Fm', bpm: 127 },
+                { title: 'What 2 Do', artist: '딘 (DEAN)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: 'D (Half Moon)', artist: '딘 (DEAN)', category: '인디/힙합', key: '?', bpm: 103 },
+                { title: '21', artist: '딘 (DEAN)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '넘어와', artist: '딘 (DEAN)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: 'instagram', artist: '딘 (DEAN)', category: '인디/힙합', key: 'G#m', bpm: 140 },
+                { title: '하루살이', artist: '딘 (DEAN)', category: '인디/힙합', key: 'Bb', bpm: 86 },
+                { title: '맞네', artist: '루시 (LUCY)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '시간을 거슬러', artist: '린', category: '인디/힙합', key: 'D', bpm: 132 },
+                { title: 'Marry me', artist: '마크툽', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '시작의 아이', artist: '마크툽', category: '인디/힙합', difficulty: '어려움', key: '?', bpm: '?' },
+                { title: '비행운', artist: '문문', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '나랑 도망가자', artist: '밍기뉴', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '혜화동', artist: '박보람', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: 'All I Wanna Do', artist: '박재범 (Jay Park)', category: '인디/힙합', difficulty: '2절', key: '?', bpm: '?' },
+                { title: '이럴 거면 그러지 말지', artist: '백아연', category: '인디/힙합', difficulty: '2절', key: '?', bpm: '?' },
+                { title: '우주를 건너', artist: '백예린', category: '인디/힙합', difficulty: '1절', key: '?', bpm: '?' },
+                { title: 'Bye bye my blue', artist: '백예린', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '그건 아마 우리의 잘못은 아닐 거야', artist: '백예린', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '지켜줄게', artist: '백예린', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '우주를 줄게', artist: '볼빨간사춘기', category: '인디/힙합', difficulty: '1절', key: '?', bpm: '?' },
+                { title: '나만 안 되는 연애', artist: '볼빨간사춘기', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '좋다고 말해', artist: '볼빨간사춘기', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '나의 사춘기에게', artist: '볼빨간사춘기', category: '인디/힙합', difficulty: '어려움', key: '?', bpm: '?' },
+                { title: '비누 (Clean)', artist: '비비 (BIBI)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '나비', artist: '비비 (BIBI)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '신경 써여', artist: '비비 (BIBI)', category: '인디/힙합', difficulty: '2절', key: '?', bpm: '?' },
+                { title: '사장님 도박은 재미로 하셔야 합니다', artist: '비비 (BIBI)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '쉬가릿 (She Got It)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '사랑의 묘약', artist: '비비 (BIBI)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '인생은 나쁜 X', artist: '비비 (BIBI)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: 'PADO', artist: '비비 (BIBI)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '불륜 (Sweet Sorrow of Mother)', artist: '비비 (BIBI)', category: '인디/힙합', difficulty: '1절', key: '?', bpm: '?' },
+                { title: '밤양갱', artist: '비비 (BIBI)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '데레', artist: '비비 (BIBI)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '가면무도회', artist: '비비 (BIBI)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '나쁜 년 (BIBI Vengeance)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '책방오빠 문학소녀', artist: '비비 (BIBI)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '구애', artist: '선우정아', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '동거', artist: '선우정아', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '도망가자', artist: '선우정아', category: '인디/힙합', difficulty: '어려움', key: '?', bpm: '?' },
+                { title: '보내야 할 때 보낼 수 있을까', artist: '소래', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '오늘 취하면', artist: '수란', category: '인디/힙합', difficulty: '1절', key: '?', bpm: '?' },
+                { title: '나성에 가면', artist: '심은경', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '달과 6펜스', artist: '심규선', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '강', artist: '심규선', category: '인디/힙합', difficulty: '어려움', key: '?', bpm: '?' },
+                { title: '이게 아닌데', artist: '아이유 (IU)', category: '인디/힙합', difficulty: '2절', key: '?', bpm: '?' },
+                { title: '나만 몰랐던 이야기', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '복숭아', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '하루 끝', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '그 애 참 싫다', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '누구나 비밀은 있다', artist: '아이유 (IU)', category: '인디/힙합', difficulty: '어려움', key: '?', bpm: '?' },
+                { title: '입술 사이 (50cm)', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: 'Modern Times', artist: '아이유 (IU)', category: '인디/힙합', difficulty: '어려움', key: '?', bpm: '?' },
+                { title: '싫은 날', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: 'Voice Mail', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '금요일에 만나요', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '봄 사랑 벚꽃 말고', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '나의 옛날 이야기', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '사랑이 지나가면', artist: '아이유 (IU)', category: '인디/힙합', difficulty: '2절', key: '?', bpm: '?' },
+                { title: '너의 의미', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '마음', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '스물셋', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '푸르던', artist: '아이유 (IU)', category: '인디/힙합', difficulty: '2절', key: '?', bpm: '?' },
+                { title: '무릎', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '밤편지', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '사랑이 잘', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '이 지금', artist: '아이유 (IU)', category: '인디/힙합', difficulty: '어려움', key: '?', bpm: '?' },
+                { title: '이런 엔딩', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '마침표', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
+                { title: '이름에게', artist: '아이유 (IU)', category: '인디/힙합', difficulty: '2절', key: '?', bpm: '?' },
+            ];
+
+            // 노래 데이터에 기본값 및 랜덤 속성 할당
+            const songs = allSongsData.map(song => {
+                const newSong = { ...song }; // 원본 객체를 변경하지 않기 위해 복사
+                
+                if (newSong.category !== '업보목록') {
+                    // key와 bpm이 없는 경우 임의로 할당
+                    if (!newSong.key) newSong.key = '?';
+                    if (!newSong.bpm) newSong.bpm = '?';
+
+                    // 난이도나 가격 태그가 없는 경우 랜덤 할당 로직 제거 (빈칸 유지)
+                    /*
+                    // cheeseTag가 없는 경우 랜덤 할당
+                    if (!newSong.cheeseTag) {
+                        newSong.cheeseTag = Math.random() < 0.5 ? '5,000치즈' : '10,000치즈';
+                    }
+                    // difficulty가 undefined인 경우에만 랜덤 할당 (null인 경우는 유지)
+                    // 이전 버전과 동일하게 null인 경우에도 랜덤 할당되도록 수정
+                    if (newSong.difficulty === undefined || newSong.difficulty === null) { 
+                        const randomNum = Math.random();
+                        if (randomNum < 0.25) {
+                            newSong.difficulty = '어려움';
+                        } else if (randomNum < 0.5) {
+                            newSong.difficulty = '1절';
+                        } else if (randomNum < 0.75) {
+                            newSong.difficulty = '2절';
+                        } else {
+                            newSong.difficulty = null; // 태그 없음
+                        }
+                    }
+                    */
+                }
+                return newSong;
+            });
+
+            // DOM 요소들을 변수에 할당
+            const searchInput = document.getElementById('search-input');
+            const songList = document.getElementById('song-list');
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            const toast = document.getElementById('toast');
+            
+            // 공지사항 모달 관련 요소
+            const noticeModal = document.getElementById('notice-modal');
+            const closeModalBtn = document.getElementById('close-modal');
+            const showModalBtn = document.getElementById('show-modal-btn');
+            
+            // 숙제 모달 관련 요소
+            const homeworkModal = document.getElementById('homework-modal');
+            const closeHomeworkModalBtn = document.getElementById('close-homework-modal');
+            const showHomeworkModalBtn = document.getElementById('show-homework-modal-btn');
+
+            let activeCategory = 'All'; // 현재 활성화된 카테고리를 추적합니다.
+
+            /**
+             * 주어진 노래 데이터 배열을 바탕으로 HTML 노래 카드를 생성하고 목록에 추가합니다.
+             * @param {Array<Object>} songsToRender - 렌더링할 노래 객체 배열
+             */
+            const renderSongs = (songsToRender) => {
+                songList.innerHTML = ''; // 기존 목록을 비웁니다.
+                if (songsToRender.length === 0) {
+                    songList.innerHTML = '<p class="text-center text-gray-500 col-span-full">해당 카테고리에 맞는 노래가 없습니다.</p>';
+                    return;
+                }
+                songsToRender.forEach(song => {
+                    const card = document.createElement('div');
+                    // 호버 스케일 효과를 위한 새로운 클래스 적용
+                    card.className = 'bg-gray-800 p-4 rounded-xl shadow-md transform card-hover-scale transition-transform duration-300 cursor-pointer';
+                    
+                    let tagsHtml = '';
+                    if (song.category === '업보목록') {
+                        // '업보목록' 카테고리인 경우 "녹음" 또는 "노래 연습" 태그 중 하나를 표시
+                        tagsHtml = `<span class="bg-gray-700 text-purple-400 text-xs font-semibold px-2 py-1 rounded-full">${song.upboType}</span>`;
+                    } else {
+                        // 그 외 카테고리인 경우 카테고리, 난이도 (있으면), 치즈 태그를 표시
+                        tagsHtml = `
+                            <span class="bg-gray-700 text-gray-400 text-xs font-semibold px-2 py-1 rounded-full">${song.category}</span>
+                            ${song.difficulty ? `<span class="bg-gray-700 text-blue-400 text-xs font-semibold px-2 py-1 rounded-full">${song.difficulty}</span>` : ''}
+                            ${song.cheeseTag ? `<span class="bg-gray-700 text-yellow-400 text-xs font-semibold px-2 py-1 rounded-full">${song.cheeseTag}</span>` : ''}
+                        `;
+                    }
+
+                    card.innerHTML = `
+                        <div class="flex items-baseline justify-between"> <!-- 노래 제목과 가수를 한 줄에 표시, Key/BPM을 우측으로 이동 -->
+                            <div class="flex items-baseline overflow-hidden">
+                                <h3 class="text-lg font-semibold text-gray-50 truncate">${song.title}</h3>
+                                <p class="text-gray-400 text-sm truncate ml-2">${song.artist}</p>
+                            </div>
+                            <div class="flex space-x-2 text-gray-500 text-xs flex-shrink-0 ml-2">
+                                <span>Key: ${song.key || '?'}</span>
+                                <span>BPM: ${song.bpm || '?'}</span>
+                            </div>
+                        </div>
+                        <div class="mt-2 flex items-center justify-between">
+                            <!-- 태그들을 함께 배치 -->
+                            <div class="flex space-x-2">
+                                ${tagsHtml}
+                            </div>
+                            <!-- 메모 표시 영역 (작게, 오른쪽 정렬, 태그와 같은 줄) -->
+                            ${song.memo ? `<div class="text-gray-400 text-sm px-2 py-1 rounded-md">${song.memo}</div>` : ''}
+                        </div>
+                    `;
+                    
+                    // 클릭 이벤트 리스너를 추가하여 신청 문구를 클립보드에 복사합니다.
+                    // '업보목록' 카테고리인 경우 복사 기능을 비활성화
+                    if (song.category !== '업보목록') {
+                        card.addEventListener('click', () => {
+                            const textToCopy = `신청 ${song.title}`;
+                            // 텍스트를 클립보드에 복사하는 함수 호출
+                            copyToClipboard(textToCopy);
+                        });
+                    } else {
+                        // 업보목록 곡은 클릭 시 복사 안 함 (선택적으로 다른 동작을 추가할 수 있음)
+                        card.style.cursor = 'default'; // 커서 변경으로 클릭 불가 시각적 피드백 제공
+                        card.addEventListener('click', () => {
+                            showToast(`'${song.title}' 곡은 업보목록에 있어 복사할 수 없습니다.`);
+                        });
+                    }
+                    
+                    songList.appendChild(card);
+                });
+            };
+
+            /**
+             * 텍스트를 클립보드에 복사하고 알림 메시지를 표시합니다.
+             * @param {string} text - 클립보드에 복사할 텍스트
+             */
+            const copyToClipboard = (text) => {
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                textArea.style.position = 'fixed'; // 화면 밖으로 배치하여 사용자에게 보이지 않게 함
+                textArea.style.top = '0';
+                textArea.style.left = '0';
+                textArea.style.opacity = '0';
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showToast(`클립보드에 "${text}"가 복사되었습니다.`);
+                } catch (err) {
+                    console.error('클립보드 복사 실패:', err);
+                    showToast('클립보드 복사 실패!');
+                } finally {
+                    document.body.removeChild(textArea); // 생성된 textarea 제거
+                }
+            };
+
+            /**
+             * 클립보드 복사 성공 알림 메시지를 표시합니다.
+             * @param {string} message - 알림창에 표시할 메시지
+             */
+            const showToast = (message) => {
+                toast.textContent = message;
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }
+
+            /**
+             * 카테고리 또는 검색어에 따라 노래 목록을 필터링하고 렌더링합니다.
+             */
+            const filterAndRender = () => {
+                let currentFilteredSongs = songs; // Start with the full list of songs
+
+                // 1. Category Filtering
+                if (activeCategory === 'All') {
+                    // If 'All' is selected, show all songs EXCEPT '업보목록'
+                    currentFilteredSongs = currentFilteredSongs.filter(song => song.category !== '업보목록');
+                } else {
+                    // If a specific category is selected, show only songs from that category
+                    currentFilteredSongs = currentFilteredSongs.filter(song => song.category === activeCategory);
+                }
+                
+                // 2. Search Filtering
+                const searchTerm = searchInput.value.toLowerCase();
+                if (searchTerm) {
+                    currentFilteredSongs = currentFilteredSongs.filter(song =>
+                        // song.title과 song.artist가 undefined일 경우를 대비하여 빈 문자열로 대체
+                        (song.title || '').toLowerCase().includes(searchTerm) || 
+                        (song.artist || '').toLowerCase().includes(searchTerm)
+                    );
+                }
+                
+                renderSongs(currentFilteredSongs);
+            };
+
+            // 공지사항 모달 표시 및 닫기 기능
+            const showNoticeModal = () => {
+                noticeModal.classList.remove('hidden');
+            };
+
+            const closeNoticeModal = () => {
+                noticeModal.classList.add('hidden');
+            };
+            
+            // 숙제 모달 표시 및 닫기 기능
+            const showHomeworkModal = () => {
+                homeworkModal.classList.remove('hidden');
+            };
+
+            const closeHomeworkModal = () => {
+                homeworkModal.classList.add('hidden');
+            };
+
+            // 공지사항 버튼과 닫기 버튼에 클릭 이벤트 리스너를 추가합니다.
+            showModalBtn.addEventListener('click', showNoticeModal);
+            closeModalBtn.addEventListener('click', closeNoticeModal);
+            
+            // 숙제 버튼과 닫기 버튼에 클릭 이벤트 리스너를 추가합니다.
+            showHomeworkModalBtn.addEventListener('click', showHomeworkModal);
+            closeHomeworkModalBtn.addEventListener('click', closeHomeworkModal);
+
+            // 카테고리 버튼에 클릭 이벤트 리스너를 추가합니다.
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // 모든 버튼의 활성화 스타일 초기화
+                    categoryButtons.forEach(btn => {
+                        btn.classList.remove('bg-blue-500', 'text-white', 'bg-orange-500');
+                        if (btn.getAttribute('data-category') === '업보목록') {
+                            btn.classList.add('bg-orange-700', 'hover:bg-orange-600');
+                        } else {
+                            btn.classList.add('bg-gray-700', 'text-gray-200', 'hover:bg-gray-600');
+                        }
+                    });
+
+                    // 클릭된 버튼의 활성화 스타일 적용
+                    if (button.getAttribute('data-category') === '업보목록') {
+                        button.classList.remove('bg-orange-700', 'hover:bg-orange-600');
+                        button.classList.add('bg-orange-500', 'text-white');
+                    } else {
+                        button.classList.remove('bg-gray-700', 'text-gray-200', 'hover:bg-gray-600');
+                        button.classList.add('bg-blue-500', 'text-white');
+                    }
+                    
+                    activeCategory = button.getAttribute('data-category');
+                    filterAndRender();
+                });
+            });
+
+            // 검색 입력 필드에 'keyup' 이벤트 리스너를 추가합니다.
+            searchInput.addEventListener('keyup', () => {
+                filterAndRender();
+            });
+
+            // 페이지 로드 시 전체 노래 목록을 렌더링합니다.
+            filterAndRender();
+        });
+    </script>
+</body>
+</html>
