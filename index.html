@@ -423,7 +423,7 @@
                     } else {
                         // 그 외 카테고리인 경우 카테고리, 난이도 (있으면), 치즈 태그를 표시
                         tagsHtml = `
-                            <span class="bg-gray-700 text-gray-400 text-xs font-semibold px-1 py-1 rounded-full">${song.category}</span>
+                            <span class="bg-gray-700 text-gray-400 text-xs font-semibold px-2 py-1 rounded-full">${song.category}</span>
                             ${song.difficulty ? `<span class="bg-gray-700 text-blue-400 text-xs font-semibold px-2 py-1 rounded-full">${song.difficulty}</span>` : ''}
                             ${song.cheeseTag ? `<span class="bg-gray-700 text-yellow-400 text-xs font-semibold px-2 py-1 rounded-full">${song.cheeseTag}</span>` : ''}
                         `;
@@ -433,7 +433,7 @@
                         <div class="flex items-baseline justify-between"> <!-- 노래 제목과 가수를 한 줄에 표시, Key/BPM을 우측으로 이동 -->
                             <div class="flex items-baseline overflow-hidden">
                                 <h3 class="text-lg font-semibold text-gray-50 truncate">${song.title}</h3>
-                                <p class="text-gray-400 text-sm truncate ml-2">${song.artist}</p>
+                                <p class="text-gray-400 text-sm truncate ml-1">${song.artist}</p>
                             </div>
                             <div class="flex space-x-2 text-gray-500 text-xs flex-shrink-0 ml-2">
                                 <span>Key: ${song.key || '?'}</span>
@@ -600,6 +600,7 @@
 </body>
 
 </html>
+
 
 
 
