@@ -181,173 +181,1219 @@
             // 모든 노래 데이터를 한 곳에 정의합니다.
             // difficulty와 cheeseTag는 '업보목록'을 제외하고 랜덤으로 할당될 것이므로 초기 데이터에서는 생략합니다.
             const allSongsData = [
-                // 남자 아이돌
-                { title: 'Dynamite', artist: 'BTS', category: '남자 아이돌', key: 'G#', bpm: 114, memo:"test" },
-                { title: 'Idol', artist: 'BTS', category: '남자 아이돌', key: 'A', bpm: 126 },
-                { title: 'Seven (feat. Latto)', artist: '정국', category: '남자 아이돌', key: 'Em', bpm: 100 },
-                { title: 'Get A Guitar', artist: 'RIIZE', category: '남자 아이돌', key: 'Cm', bpm: 100 },
-                { title: 'Love 119', artist: 'RIIZE', category: '남자 아이돌', key: 'Fm', bpm: 120 },
-                // 여자 아이돌
-                { title: 'Hype Boy', artist: '뉴진스 (New Jeans)', category: '여자 아이돌', key: 'G', bpm: 120 },
-                { title: 'Cookie', artist: '뉴진스 (New Jeans)', category: '여자 아이돌', key: 'C', bpm: 110 },
-                { title: 'Hurt', artist: '뉴진스 (New Jeans)', category: '여자 아이돌', key: 'Am', bpm: 90 },
-                { title: 'Ditto', artist: '뉴진스 (New Jeans)', category: '여자 아이돌', key: 'C#', bpm: 134 },
-                { title: 'OMG', artist: '뉴진스 (New Jeans)', category: '여자 아이돌', key: 'F', bpm: 120 },
-                { title: 'New Jeans', artist: '뉴진스 (New Jeans)', category: '여자 아이돌', key: 'A', bpm: 100 },
-                { title: 'Super Shy', artist: '뉴진스 (New Jeans)', category: '여자 아이돌', key: 'G#', bpm: 125 },
-                { title: 'ETA', artist: '뉴진스 (New Jeans)', category: '여자 아이돌', key: 'Am', bpm: 130 },
-                { title: 'Cool With You', artist: '뉴진스(New Jeans)', category: '여자 아이돌', key: 'C#m', bpm: 100 },
-                { title: 'How Sweet', artist: '뉴진스(New Jeans)', category: '여자 아이돌', key: 'G', bpm: 110 },
-                { title: '행복(Happiness)', artist: '레드벨벳 (Red Velvet)', category: '여자 아이돌', key: 'F#', bpm: 120, difficulty: '어려움' },
-                { title: 'Ice Cream Cake', artist: '레드벨벳 (Red Velvet)', category: '여자 아이돌', key: 'Fm', bpm: 120 },
-                { title: 'Something Kinda Crazy', artist: '레드벨벳 (Red Velvet)', category: '여자 아이돌', key: 'Em', bpm: 100 },
-                { title: '사탕', artist: '레드벨벳 (Red Velvet)', category: '여자 아이돌', key: 'C', bpm: 110, difficulty: '2절' },
-                { title: '러시안 룰렛(Russian Roulette)', artist: '레드벨벳 (Red Velvet)', category: '여자 아이돌', key: 'G#', bpm: 125, difficulty: '어려움' },
-                { title: '빨간 맛(Red Flavor)', artist: '레드벨벳 (Red Velvet)', category: '여자 아이돌', key: 'A', bpm: 126 },
-                { title: '피카부(Peek-A-Boo)', artist: '레드벨벳 (Red Velvet)', category: '여자 아이돌', key: 'Dm', bpm: 120 },
-                { title: 'Power Up', artist: '레드벨벳 (Red Velvet)', category: '여자 아이돌', key: 'Cm', bpm: 100, difficulty: '어려움' },
-                // 업보목록
-                { title: 'love me or leave me', artist: '데이식스', category: '업보목록', key: '?', bpm: '?', upboType: '녹음' },
-                { title: '군청', artist: '요아소비', category: '업보목록', key: '?', bpm: '?', upboType: '녹음' },
-                { title: '아 왜', artist: '데이식스', category: '업보목록', key: '?', bpm: '?', upboType: '녹음' },
-                { title: 'I Like U', artist: 'NIKI', category: '업보목록', key: '?', bpm: '?', upboType: '노래 연습' },
-                { title: '여봉봉', artist: '아울', category: '업보목록', key: '?', bpm: '?', upboType: '애교곡' },
-                // 제이팝
-                { title: '밤을 달리다', artist: 'YOASOBI', category: '제이팝', difficulty: '1절', cheeseTag: '5,000치즈', key: 'F#', bpm: 130 },
-                { title: 'Hey-day 광상곡', artist: 'After Glow', category: '제이팝', difficulty: '2절', cheeseTag: '5,000치즈', key: 'A', bpm: 200 },
-                { title: 'R.I.O.T', artist: 'Raise A Suilen', category: '제이팝', difficulty: '1절', cheeseTag: '5,000치즈', key: 'Dm', bpm: 190 },
-                { title: '체리밤', artist: 'SILENT SIREN', category: '제이팝', difficulty: '1절', cheeseTag: '5,000치즈', key: 'G', bpm: 130 },
-                { title: 'God Knows...', artist: 'Shoko nakagawa', category: '제이팝', difficulty: '2절', cheeseTag: '5,000치즈', key: 'F#m', bpm: 175 },
-                { title: '꼭두각시 피에로', artist: '하츠네 미쿠', category: '제이팝', difficulty: '어려움', cheeseTag: '5,000치즈', key: 'Cm', bpm: 120 },
-                { title: '로미오와 신데렐라', artist: '하츠네 미쿠', category: '제이팝', difficulty: '2절', cheeseTag: '5,000치즈', key: 'C', bpm: 120 },
-                { title: '무희', artist: '바운디', category: '제이팝', difficulty: null, cheeseTag: '5,000치즈', key: 'Am', bpm: 128 },
-                { title: 'KICK BACK', artist: '요네즈 켄시', category: '제이팝', difficulty: '어려움', cheeseTag: '5,000치즈', key: 'Dm', bpm: 100 },
-                { title: 'Lady', artist: '요네즈 켄시', category: '제이팝', difficulty: null, cheeseTag: '5,000치즈', key: 'Bb', bpm: 120 },
-                { title: '선잠', artist: '레이나', category: '제이팝', difficulty: null, cheeseTag: '5,000치즈', key: 'C', bpm: 70 },
-                { title: 'finale', artist: 'eill', category: '제이팝', difficulty: '1절', cheeseTag: '5,000치즈', key: 'F', bpm: 100 },
-                // 팝송
-                { title: 'Tango', artist: 'Abir', category: '팝송', difficulty: '1절', cheeseTag: '5,000치즈', key: 'F#m', bpm: 145 },
-                { title: 'Someone Like You', artist: 'Adle', category: '팝송', difficulty: '어려움', cheeseTag: '5,000치즈', key: 'A', bpm: 135 },
-                { title: 'If I Ain\'t Got You', artist: 'Alicia Keys', category: '팝송', difficulty: '2절', cheeseTag: '5,000치즈', key: 'G', bpm: 118 },
-                { title: 'How Far I\'ll Go', artist: 'Auli\'i Cravalho', category: '팝송', difficulty: null, cheeseTag: '5,000치즈', key: 'E', bpm: 90 },
-                { title: 'Watermelon Sugar', artist: 'Harry Styles', category: '팝송', difficulty: null, cheeseTag: '5,000치즈', key: 'Dm', bpm: 96 },
-                { title: 'Let It Go', artist: 'Idina Menzel', category: '팝송', difficulty: '2절', cheeseTag: '5,000치즈', key: 'G', bpm: 68 },
-                { title: 'Part of Your World', artist: 'Jodi Benson', category: '팝송', difficulty: null, cheeseTag: '5,000치즈', key: 'Gb', bpm: 106 },
-                { title: 'Teenage Fantasy', artist: 'Jorja Smith', category: '팝송', difficulty: null, cheeseTag: '5,000치즈', key: 'Em', bpm: 88 },
-                { title: 'When Will My Life Begin', artist: 'Mandy Moore', category: '팝송', difficulty: '1절', cheeseTag: '5,000치즈', key: 'E', bpm: 120 },
-                { title: 'Speechless', artist: 'Naomi Scott', category: '팝송', difficulty: '1절', cheeseTag: '5,000치즈', key: 'Am', bpm: 140 },
-                { title: 'I Love You 3000', artist: 'Stephanie Poetri', category: '팝송', difficulty: null, cheeseTag: '5,000치즈', key: 'F#', bpm: 180 },
-                { title: 'Whiskey and Morphine', artist: 'Alexander Jean', category: '팝송', difficulty: '어려움', cheeseTag: '5,000치즈', key: 'Dm', bpm: 120 },
-                { title: 'can\'t take my eyes off you', artist: 'morten harket', category: '팝송', difficulty: null, cheeseTag: '5,000치즈', key: 'F#', bpm: 180 },
-                { title: 'Paper Hearts', artist: 'Tori Kelly', category: '팝송', difficulty: null, cheeseTag: '5,000치즈', key: 'Cm', bpm: 70 },
-                // 인디/힙합
-                { title: '더 좋아한 내가 진 거야', artist: '015B', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '사랑은 은하수 다방에서', artist: '10cm', category: '인디/힙합', key: 'E', bpm: 122 },
-                { title: '스토커', artist: '10cm', category: '인디/힙합', key: 'Db/F', bpm: 68 },
-                { title: '봄이 좋냐?', artist: '10cm', category: '인디/힙합', key: 'Db/F', bpm: 94 },
-                { title: 'Pet', artist: '10cm', category: '인디/힙합', key: 'C#', bpm: 126 },
-                { title: '폰서트', artist: '10cm', category: '인디/힙합', key: 'A', bpm: 108 },
-                { title: '가끔 미치도록 네가 안고 싶어질 때가 있어', artist: '가을방학', category: '인디/힙합', key: 'E/A', bpm: 78 },
-                { title: '지금껏 그랬듯 앞으로도 계속', artist: '구름', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '더 나은 사람', artist: '구름', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '오늘 뭐 했는지 말해 봐', artist: '권진아', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '우결', artist: '기리보이 (GRBoy)', category: '인디/힙합', difficulty: '2절', key: '?', bpm: '?' },
-                { title: '호구', artist: '기리보이 (GRBoy)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '이혼서류', artist: '기리보이 (GRBoy)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '교통정리', artist: '기리보이 (GRBoy)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '예쁘잖아', artist: '기리보이 (GRBoy)', category: '인디/힙합', key: '?', bpm: 83 },
-                { title: '어떤 종말', artist: '김필선', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: 'Phobia', artist: '다운 (Dwn)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '김밥', artist: '더 자두', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: 'josee!', artist: '데이먼스 이어 (Damons year)', category: '인디/힙합', key: 'Bb', bpm: 'Slow' },
-                { title: 'Congratulations', artist: '데이식스 (DAY6)', category: '인디/힙합', difficulty: '1절', key: 'Eb', bpm: 180 },
-                { title: '아 왜 (I Wait)', artist: '데이식스 (DAY6)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '예뻤어', artist: '데이식스 (DAY6)', category: '인디/힙합', key: 'Fm', bpm: 168 },
-                { title: '어떻게 말해', artist: '데이식스 (DAY6)', category: '인디/힙합', difficulty: '어려움', key: '?', bpm: 184 },
-                { title: '장난 아닌데', artist: '데이식스 (DAY6)', category: '인디/힙합', key: '?', bpm: 124 },
-                { title: 'Dance Dance', artist: '데이식스 (DAY6)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: 'Be Lazy', artist: '데이식스 (DAY6)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '완전 멋지잖아', artist: '데이식스 (DAY6)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '365247', artist: '데이식스 (DAY6)', category: '인디/힙합', difficulty: '어려움', key: '?', bpm: '?' },
-                { title: 'Not mine', artist: '데이식스 (DAY6)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: 'Zombie', artist: '데이식스 (DAY6)', category: '인디/힙합', key: 'C', bpm: 122 },
-                { title: 'Afraid', artist: '데이식스 (DAY6)', category: '인디/힙합', difficulty: '2절', key: '?', bpm: '?' },
-                { title: 'Love me or Leave me', artist: '데이식스 (DAY6)', category: '인디/힙합', key: '?', bpm: 126 },
-                { title: 'lovemore.', artist: '도시 (dosii)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: 'OHAYO MY NIGHT', artist: '디핵', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: 'I Love It', artist: '딘 (DEAN)', category: '인디/힙합', key: '?', bpm: 124 },
-                { title: '풀어 (Pour Up)', artist: '딘 (DEAN)', category: '인디/힙합', key: 'Fm', bpm: 127 },
-                { title: 'What 2 Do', artist: '딘 (DEAN)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: 'D (Half Moon)', artist: '딘 (DEAN)', category: '인디/힙합', key: '?', bpm: 103 },
-                { title: '21', artist: '딘 (DEAN)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '넘어와', artist: '딘 (DEAN)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: 'instagram', artist: '딘 (DEAN)', category: '인디/힙합', key: 'G#m', bpm: 140 },
-                { title: '하루살이', artist: '딘 (DEAN)', category: '인디/힙합', key: 'Bb', bpm: 86 },
-                { title: '맞네', artist: '루시 (LUCY)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '시간을 거슬러', artist: '린', category: '인디/힙합', key: 'D', bpm: 132 },
-                { title: 'Marry me', artist: '마크툽', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '시작의 아이', artist: '마크툽', category: '인디/힙합', difficulty: '어려움', key: '?', bpm: '?' },
-                { title: '비행운', artist: '문문', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '나랑 도망가자', artist: '밍기뉴', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '혜화동', artist: '박보람', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: 'All I Wanna Do', artist: '박재범 (Jay Park)', category: '인디/힙합', difficulty: '2절', key: '?', bpm: '?' },
-                { title: '이럴 거면 그러지 말지', artist: '백아연', category: '인디/힙합', difficulty: '2절', key: '?', bpm: '?' },
-                { title: '우주를 건너', artist: '백예린', category: '인디/힙합', difficulty: '1절', key: '?', bpm: '?' },
-                { title: 'Bye bye my blue', artist: '백예린', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '그건 아마 우리의 잘못은 아닐 거야', artist: '백예린', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '지켜줄게', artist: '백예린', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '우주를 줄게', artist: '볼빨간사춘기', category: '인디/힙합', difficulty: '1절', key: '?', bpm: '?' },
-                { title: '나만 안 되는 연애', artist: '볼빨간사춘기', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '좋다고 말해', artist: '볼빨간사춘기', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '나의 사춘기에게', artist: '볼빨간사춘기', category: '인디/힙합', difficulty: '어려움', key: '?', bpm: '?' },
-                { title: '비누 (Clean)', artist: '비비 (BIBI)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '나비', artist: '비비 (BIBI)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '신경 써여', artist: '비비 (BIBI)', category: '인디/힙합', difficulty: '2절', key: '?', bpm: '?' },
-                { title: '사장님 도박은 재미로 하셔야 합니다', artist: '비비 (BIBI)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '쉬가릿 (She Got It)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '사랑의 묘약', artist: '비비 (BIBI)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '인생은 나쁜 X', artist: '비비 (BIBI)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: 'PADO', artist: '비비 (BIBI)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '불륜 (Sweet Sorrow of Mother)', artist: '비비 (BIBI)', category: '인디/힙합', difficulty: '1절', key: '?', bpm: '?' },
-                { title: '밤양갱', artist: '비비 (BIBI)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '데레', artist: '비비 (BIBI)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '가면무도회', artist: '비비 (BIBI)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '나쁜 년 (BIBI Vengeance)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '책방오빠 문학소녀', artist: '비비 (BIBI)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '구애', artist: '선우정아', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '동거', artist: '선우정아', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '도망가자', artist: '선우정아', category: '인디/힙합', difficulty: '어려움', key: '?', bpm: '?' },
-                { title: '보내야 할 때 보낼 수 있을까', artist: '소래', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '오늘 취하면', artist: '수란', category: '인디/힙합', difficulty: '1절', key: '?', bpm: '?' },
-                { title: '나성에 가면', artist: '심은경', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '달과 6펜스', artist: '심규선', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '강', artist: '심규선', category: '인디/힙합', difficulty: '어려움', key: '?', bpm: '?' },
-                { title: '이게 아닌데', artist: '아이유 (IU)', category: '인디/힙합', difficulty: '2절', key: '?', bpm: '?' },
-                { title: '나만 몰랐던 이야기', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '복숭아', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '하루 끝', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '그 애 참 싫다', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '누구나 비밀은 있다', artist: '아이유 (IU)', category: '인디/힙합', difficulty: '어려움', key: '?', bpm: '?' },
-                { title: '입술 사이 (50cm)', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: 'Modern Times', artist: '아이유 (IU)', category: '인디/힙합', difficulty: '어려움', key: '?', bpm: '?' },
-                { title: '싫은 날', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: 'Voice Mail', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '금요일에 만나요', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '봄 사랑 벚꽃 말고', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '나의 옛날 이야기', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '사랑이 지나가면', artist: '아이유 (IU)', category: '인디/힙합', difficulty: '2절', key: '?', bpm: '?' },
-                { title: '너의 의미', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '마음', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '스물셋', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '푸르던', artist: '아이유 (IU)', category: '인디/힙합', difficulty: '2절', key: '?', bpm: '?' },
-                { title: '무릎', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '밤편지', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '사랑이 잘', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '이 지금', artist: '아이유 (IU)', category: '인디/힙합', difficulty: '어려움', key: '?', bpm: '?' },
-                { title: '이런 엔딩', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '마침표', artist: '아이유 (IU)', category: '인디/힙합', key: '?', bpm: '?' },
-                { title: '이름에게', artist: '아이유 (IU)', category: '인디/힙합', difficulty: '2절', key: '?', bpm: '?' },
-            ];
+                    {
+                        "title": "Dynamite",
+                        "artist": "BTS",
+                        "category": "남자 아이돌",
+                        "key": "G#",
+                        "bpm": 114,
+                        "memo": "test"
+                    },
+                    {
+                        "title": "Idol",
+                        "artist": "BTS",
+                        "category": "남자 아이돌",
+                        "key": "A",
+                        "bpm": 126
+                    },
+                    {
+                        "title": "Seven (feat. Latto)",
+                        "artist": "정국",
+                        "category": "남자 아이돌",
+                        "key": "Em",
+                        "bpm": 100
+                    },
+                    {
+                        "title": "Get A Guitar",
+                        "artist": "RIIZE",
+                        "category": "남자 아이돌",
+                        "key": "Cm",
+                        "bpm": 100
+                    },
+                    {
+                        "title": "Love 119",
+                        "artist": "RIIZE",
+                        "category": "남자 아이돌",
+                        "key": "Fm",
+                        "bpm": 120
+                    },
+                    {
+                        "title": "Hype Boy",
+                        "artist": "뉴진스 (New Jeans)",
+                        "category": "여자 아이돌",
+                        "key": "G",
+                        "bpm": 120
+                    },
+                    {
+                        "title": "Cookie",
+                        "artist": "뉴진스 (New Jeans)",
+                        "category": "여자 아이돌",
+                        "key": "C",
+                        "bpm": 110
+                    },
+                    {
+                        "title": "Hurt",
+                        "artist": "뉴진스 (New Jeans)",
+                        "category": "여자 아이돌",
+                        "key": "Am",
+                        "bpm": 90
+                    },
+                    {
+                        "title": "Ditto",
+                        "artist": "뉴진스 (New Jeans)",
+                        "category": "여자 아이돌",
+                        "key": "C#",
+                        "bpm": 134
+                    },
+                    {
+                        "title": "OMG",
+                        "artist": "뉴진스 (New Jeans)",
+                        "category": "여자 아이돌",
+                        "key": "F",
+                        "bpm": 120
+                    },
+                    {
+                        "title": "New Jeans",
+                        "artist": "뉴진스 (New Jeans)",
+                        "category": "여자 아이돌",
+                        "key": "A",
+                        "bpm": 100
+                    },
+                    {
+                        "title": "Super Shy",
+                        "artist": "뉴진스 (New Jeans)",
+                        "category": "여자 아이돌",
+                        "key": "G#",
+                        "bpm": 125
+                    },
+                    {
+                        "title": "ETA",
+                        "artist": "뉴진스 (New Jeans)",
+                        "category": "여자 아이돌",
+                        "key": "Am",
+                        "bpm": 130
+                    },
+                    {
+                        "title": "Cool With You",
+                        "artist": "뉴진스(New Jeans)",
+                        "category": "여자 아이돌",
+                        "key": "C#m",
+                        "bpm": 100
+                    },
+                    {
+                        "title": "How Sweet",
+                        "artist": "뉴진스(New Jeans)",
+                        "category": "여자 아이돌",
+                        "key": "G",
+                        "bpm": 110
+                    },
+                    {
+                        "title": "행복(Happiness)",
+                        "artist": "레드벨벳 (Red Velvet)",
+                        "category": "여자 아이돌",
+                        "key": "F#",
+                        "bpm": 120,
+                        "difficulty": "어려움"
+                    },
+                    {
+                        "title": "Ice Cream Cake",
+                        "artist": "레드벨벳 (Red Velvet)",
+                        "category": "여자 아이돌",
+                        "key": "Fm",
+                        "bpm": 120
+                    },
+                    {
+                        "title": "Something Kinda Crazy",
+                        "artist": "레드벨벳 (Red Velvet)",
+                        "category": "여자 아이돌",
+                        "key": "Em",
+                        "bpm": 100
+                    },
+                    {
+                        "title": "사탕",
+                        "artist": "레드벨벳 (Red Velvet)",
+                        "category": "여자 아이돌",
+                        "key": "C",
+                        "bpm": 110,
+                        "difficulty": "2절"
+                    },
+                    {
+                        "title": "러시안 룰렛(Russian Roulette)",
+                        "artist": "레드벨벳 (Red Velvet)",
+                        "category": "여자 아이돌",
+                        "key": "G#",
+                        "bpm": 125,
+                        "difficulty": "어려움"
+                    },
+                    {
+                        "title": "빨간 맛(Red Flavor)",
+                        "artist": "레드벨벳 (Red Velvet)",
+                        "category": "여자 아이돌",
+                        "key": "A",
+                        "bpm": 126
+                    },
+                    {
+                        "title": "피카부(Peek-A-Boo)",
+                        "artist": "레드벨벳 (Red Velvet)",
+                        "category": "여자 아이돌",
+                        "key": "Dm",
+                        "bpm": 120
+                    },
+                    {
+                        "title": "Power Up",
+                        "artist": "레드벨벳 (Red Velvet)",
+                        "category": "여자 아이돌",
+                        "key": "Cm",
+                        "bpm": 100,
+                        "difficulty": "어려움"
+                    },
+                    {
+                        "title": "love me or leave me",
+                        "artist": "데이식스",
+                        "category": "업보목록",
+                        "key": "?",
+                        "bpm": "?",
+                        "upboType": "녹음"
+                    },
+                    {
+                        "title": "군청",
+                        "artist": "요아소비",
+                        "category": "업보목록",
+                        "key": "?",
+                        "bpm": "?",
+                        "upboType": "녹음"
+                    },
+                    {
+                        "title": "아 왜",
+                        "artist": "데이식스",
+                        "category": "업보목록",
+                        "key": "?",
+                        "bpm": "?",
+                        "upboType": "녹음"
+                    },
+                    {
+                        "title": "I Like U",
+                        "artist": "NIKI",
+                        "category": "업보목록",
+                        "key": "?",
+                        "bpm": "?",
+                        "upboType": "노래 연습"
+                    },
+                    {
+                        "title": "여봉봉",
+                        "artist": "아울",
+                        "category": "업보목록",
+                        "key": "?",
+                        "bpm": "?",
+                        "upboType": "애교곡"
+                    },
+                    {
+                        "title": "밤을 달리다",
+                        "artist": "YOASOBI",
+                        "category": "제이팝",
+                        "difficulty": "1절",
+                        "cheeseTag": "5,000치즈",
+                        "key": "F#",
+                        "bpm": 130
+                    },
+                    {
+                        "title": "Hey-day 광상곡",
+                        "artist": "After Glow",
+                        "category": "제이팝",
+                        "difficulty": "2절",
+                        "cheeseTag": "5,000치즈",
+                        "key": "A",
+                        "bpm": 200
+                    },
+                    {
+                        "title": "R.I.O.T",
+                        "artist": "Raise A Suilen",
+                        "category": "제이팝",
+                        "difficulty": "1절",
+                        "cheeseTag": "5,000치즈",
+                        "key": "Dm",
+                        "bpm": 190
+                    },
+                    {
+                        "title": "체리밤",
+                        "artist": "SILENT SIREN",
+                        "category": "제이팝",
+                        "difficulty": "1절",
+                        "cheeseTag": "5,000치즈",
+                        "key": "G",
+                        "bpm": 130
+                    },
+                    {
+                        "title": "God Knows...",
+                        "artist": "Shoko nakagawa",
+                        "category": "제이팝",
+                        "difficulty": "2절",
+                        "cheeseTag": "5,000치즈",
+                        "key": "F#m",
+                        "bpm": 175
+                    },
+                    {
+                        "title": "꼭두각시 피에로",
+                        "artist": "하츠네 미쿠",
+                        "category": "제이팝",
+                        "difficulty": "어려움",
+                        "cheeseTag": "5,000치즈",
+                        "key": "Cm",
+                        "bpm": 120
+                    },
+                    {
+                        "title": "로미오와 신데렐라",
+                        "artist": "하츠네 미쿠",
+                        "category": "제이팝",
+                        "difficulty": "2절",
+                        "cheeseTag": "5,000치즈",
+                        "key": "C",
+                        "bpm": 120
+                    },
+                    {
+                        "title": "무희",
+                        "artist": "바운디",
+                        "category": "제이팝",
+                        "difficulty": null,
+                        "cheeseTag": "5,000치즈",
+                        "key": "Am",
+                        "bpm": 128
+                    },
+                    {
+                        "title": "KICK BACK",
+                        "artist": "요네즈 켄시",
+                        "category": "제이팝",
+                        "difficulty": "어려움",
+                        "cheeseTag": "5,000치즈",
+                        "key": "Dm",
+                        "bpm": 100
+                    },
+                    {
+                        "title": "Lady",
+                        "artist": "요네즈 켄시",
+                        "category": "제이팝",
+                        "difficulty": null,
+                        "cheeseTag": "5,000치즈",
+                        "key": "Bb",
+                        "bpm": 120
+                    },
+                    {
+                        "title": "선잠",
+                        "artist": "레이나",
+                        "category": "제이팝",
+                        "difficulty": null,
+                        "cheeseTag": "5,000치즈",
+                        "key": "C",
+                        "bpm": 70
+                    },
+                    {
+                        "title": "finale",
+                        "artist": "eill",
+                        "category": "제이팝",
+                        "difficulty": "1절",
+                        "cheeseTag": "5,000치즈",
+                        "key": "F",
+                        "bpm": 100
+                    },
+                    {
+                        "title": "Tango",
+                        "artist": "Abir",
+                        "category": "팝송",
+                        "difficulty": "1절",
+                        "cheeseTag": "5,000치즈",
+                        "key": "F#m",
+                        "bpm": 145
+                    },
+                    {
+                        "title": "Someone Like You",
+                        "artist": "Adle",
+                        "category": "팝송",
+                        "difficulty": "어려움",
+                        "cheeseTag": "5,000치즈",
+                        "key": "A",
+                        "bpm": 135
+                    },
+                    {
+                        "title": "If I Ain't Got You",
+                        "artist": "Alicia Keys",
+                        "category": "팝송",
+                        "difficulty": "2절",
+                        "cheeseTag": "5,000치즈",
+                        "key": "G",
+                        "bpm": 118
+                    },
+                    {
+                        "title": "How Far I'll Go",
+                        "artist": "Auli'i Cravalho",
+                        "category": "팝송",
+                        "difficulty": null,
+                        "cheeseTag": "5,000치즈",
+                        "key": "E",
+                        "bpm": 90
+                    },
+                    {
+                        "title": "Watermelon Sugar",
+                        "artist": "Harry Styles",
+                        "category": "팝송",
+                        "difficulty": null,
+                        "cheeseTag": "5,000치즈",
+                        "key": "Dm",
+                        "bpm": 96
+                    },
+                    {
+                        "title": "Let It Go",
+                        "artist": "Idina Menzel",
+                        "category": "팝송",
+                        "difficulty": "2절",
+                        "cheeseTag": "5,000치즈",
+                        "key": "G",
+                        "bpm": 68
+                    },
+                    {
+                        "title": "Part of Your World",
+                        "artist": "Jodi Benson",
+                        "category": "팝송",
+                        "difficulty": null,
+                        "cheeseTag": "5,000치즈",
+                        "key": "Gb",
+                        "bpm": 106
+                    },
+                    {
+                        "title": "Teenage Fantasy",
+                        "artist": "Jorja Smith",
+                        "category": "팝송",
+                        "difficulty": null,
+                        "cheeseTag": "5,000치즈",
+                        "key": "Em",
+                        "bpm": 88
+                    },
+                    {
+                        "title": "When Will My Life Begin",
+                        "artist": "Mandy Moore",
+                        "category": "팝송",
+                        "difficulty": "1절",
+                        "cheeseTag": "5,000치즈",
+                        "key": "E",
+                        "bpm": 120
+                    },
+                    {
+                        "title": "Speechless",
+                        "artist": "Naomi Scott",
+                        "category": "팝송",
+                        "difficulty": "1절",
+                        "cheeseTag": "5,000치즈",
+                        "key": "Am",
+                        "bpm": 140
+                    },
+                    {
+                        "title": "I Love You 3000",
+                        "artist": "Stephanie Poetri",
+                        "category": "팝송",
+                        "difficulty": null,
+                        "cheeseTag": "5,000치즈",
+                        "key": "F#",
+                        "bpm": 180
+                    },
+                    {
+                        "title": "Whiskey and Morphine",
+                        "artist": "Alexander Jean",
+                        "category": "팝송",
+                        "difficulty": "어려움",
+                        "cheeseTag": "5,000치즈",
+                        "key": "Dm",
+                        "bpm": 120
+                    },
+                    {
+                        "title": "can't take my eyes off you",
+                        "artist": "morten harket",
+                        "category": "팝송",
+                        "difficulty": null,
+                        "cheeseTag": "5,000치즈",
+                        "key": "F#",
+                        "bpm": 180
+                    },
+                    {
+                        "title": "Paper Hearts",
+                        "artist": "Tori Kelly",
+                        "category": "팝송",
+                        "difficulty": null,
+                        "cheeseTag": "5,000치즈",
+                        "key": "Cm",
+                        "bpm": 70
+                    },
+                    {
+                        "title": "더 좋아한 내가 진 거야",
+                        "artist": "015B",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "사랑은 은하수 다방에서",
+                        "artist": "10cm",
+                        "category": "인디/힙합",
+                        "key": "E",
+                        "bpm": 122
+                    },
+                    {
+                        "title": "스토커",
+                        "artist": "10cm",
+                        "category": "인디/힙합",
+                        "key": "Db/F",
+                        "bpm": 68
+                    },
+                    {
+                        "title": "봄이 좋냐?",
+                        "artist": "10cm",
+                        "category": "인디/힙합",
+                        "key": "Db/F",
+                        "bpm": 94
+                    },
+                    {
+                        "title": "Pet",
+                        "artist": "10cm",
+                        "category": "인디/힙합",
+                        "key": "C#",
+                        "bpm": 126
+                    },
+                    {
+                        "title": "폰서트",
+                        "artist": "10cm",
+                        "category": "인디/힙합",
+                        "key": "A",
+                        "bpm": 108
+                    },
+                    {
+                        "title": "가끔 미치도록 네가 안고 싶어질 때가 있어",
+                        "artist": "가을방학",
+                        "category": "인디/힙합",
+                        "key": "E/A",
+                        "bpm": 78
+                    },
+                    {
+                        "title": "지금껏 그랬듯 앞으로도 계속",
+                        "artist": "구름",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "더 나은 사람",
+                        "artist": "구름",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "오늘 뭐 했는지 말해 봐",
+                        "artist": "권진아",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "우결",
+                        "artist": "기리보이 (GRBoy)",
+                        "category": "인디/힙합",
+                        "difficulty": "2절",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "호구",
+                        "artist": "기리보이 (GRBoy)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "이혼서류",
+                        "artist": "기리보이 (GRBoy)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "교통정리",
+                        "artist": "기리보이 (GRBoy)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "예쁘잖아",
+                        "artist": "기리보이 (GRBoy)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": 83
+                    },
+                    {
+                        "title": "어떤 종말",
+                        "artist": "김필선",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "Phobia",
+                        "artist": "다운 (Dwn)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "김밥",
+                        "artist": "더 자두",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "josee!",
+                        "artist": "데이먼스 이어 (Damons year)",
+                        "category": "인디/힙합",
+                        "key": "Bb",
+                        "bpm": "Slow"
+                    },
+                    {
+                        "title": "Congratulations",
+                        "artist": "데이식스 (DAY6)",
+                        "category": "인디/힙합",
+                        "difficulty": "1절",
+                        "key": "Eb",
+                        "bpm": 180
+                    },
+                    {
+                        "title": "아 왜 (I Wait)",
+                        "artist": "데이식스 (DAY6)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "예뻤어",
+                        "artist": "데이식스 (DAY6)",
+                        "category": "인디/힙합",
+                        "key": "Fm",
+                        "bpm": 168
+                    },
+                    {
+                        "title": "어떻게 말해",
+                        "artist": "데이식스 (DAY6)",
+                        "category": "인디/힙합",
+                        "difficulty": "어려움",
+                        "key": "?",
+                        "bpm": 184
+                    },
+                    {
+                        "title": "장난 아닌데",
+                        "artist": "데이식스 (DAY6)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": 124
+                    },
+                    {
+                        "title": "Dance Dance",
+                        "artist": "데이식스 (DAY6)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "Be Lazy",
+                        "artist": "데이식스 (DAY6)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "완전 멋지잖아",
+                        "artist": "데이식스 (DAY6)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "365247",
+                        "artist": "데이식스 (DAY6)",
+                        "category": "인디/힙합",
+                        "difficulty": "어려움",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "Not mine",
+                        "artist": "데이식스 (DAY6)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "Zombie",
+                        "artist": "데이식스 (DAY6)",
+                        "category": "인디/힙합",
+                        "key": "C",
+                        "bpm": 122
+                    },
+                    {
+                        "title": "Afraid",
+                        "artist": "데이식스 (DAY6)",
+                        "category": "인디/힙합",
+                        "difficulty": "2절",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "Love me or Leave me",
+                        "artist": "데이식스 (DAY6)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": 126
+                    },
+                    {
+                        "title": "lovemore.",
+                        "artist": "도시 (dosii)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "OHAYO MY NIGHT",
+                        "artist": "디핵",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "I Love It",
+                        "artist": "딘 (DEAN)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": 124
+                    },
+                    {
+                        "title": "풀어 (Pour Up)",
+                        "artist": "딘 (DEAN)",
+                        "category": "인디/힙합",
+                        "key": "Fm",
+                        "bpm": 127
+                    },
+                    {
+                        "title": "What 2 Do",
+                        "artist": "딘 (DEAN)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "D (Half Moon)",
+                        "artist": "딘 (DEAN)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": 103
+                    },
+                    {
+                        "title": "21",
+                        "artist": "딘 (DEAN)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "넘어와",
+                        "artist": "딘 (DEAN)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "instagram",
+                        "artist": "딘 (DEAN)",
+                        "category": "인디/힙합",
+                        "key": "G#m",
+                        "bpm": 140
+                    },
+                    {
+                        "title": "하루살이",
+                        "artist": "딘 (DEAN)",
+                        "category": "인디/힙합",
+                        "key": "Bb",
+                        "bpm": 86
+                    },
+                    {
+                        "title": "맞네",
+                        "artist": "루시 (LUCY)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "시간을 거슬러",
+                        "artist": "린",
+                        "category": "인디/힙합",
+                        "key": "D",
+                        "bpm": 132
+                    },
+                    {
+                        "title": "Marry me",
+                        "artist": "마크툽",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "시작의 아이",
+                        "artist": "마크툽",
+                        "category": "인디/힙합",
+                        "difficulty": "어려움",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "비행운",
+                        "artist": "문문",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "나랑 도망가자",
+                        "artist": "밍기뉴",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "혜화동",
+                        "artist": "박보람",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "All I Wanna Do",
+                        "artist": "박재범 (Jay Park)",
+                        "category": "인디/힙합",
+                        "difficulty": "2절",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "이럴 거면 그러지 말지",
+                        "artist": "백아연",
+                        "category": "인디/힙합",
+                        "difficulty": "2절",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "우주를 건너",
+                        "artist": "백예린",
+                        "category": "인디/힙합",
+                        "difficulty": "1절",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "Bye bye my blue",
+                        "artist": "백예린",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "그건 아마 우리의 잘못은 아닐 거야",
+                        "artist": "백예린",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "지켜줄게",
+                        "artist": "백예린",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "우주를 줄게",
+                        "artist": "볼빨간사춘기",
+                        "category": "인디/힙합",
+                        "difficulty": "1절",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "나만 안 되는 연애",
+                        "artist": "볼빨간사춘기",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "좋다고 말해",
+                        "artist": "볼빨간사춘기",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "나의 사춘기에게",
+                        "artist": "볼빨간사춘기",
+                        "category": "인디/힙합",
+                        "difficulty": "어려움",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "비누 (Clean)",
+                        "artist": "비비 (BIBI)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "나비",
+                        "artist": "비비 (BIBI)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "신경 써여",
+                        "artist": "비비 (BIBI)",
+                        "category": "인디/힙합",
+                        "difficulty": "2절",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "사장님 도박은 재미로 하셔야 합니다",
+                        "artist": "비비 (BIBI)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "쉬가릿 (She Got It)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "사랑의 묘약",
+                        "artist": "비비 (BIBI)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "인생은 나쁜 X",
+                        "artist": "비비 (BIBI)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "PADO",
+                        "artist": "비비 (BIBI)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "불륜 (Sweet Sorrow of Mother)",
+                        "artist": "비비 (BIBI)",
+                        "category": "인디/힙합",
+                        "difficulty": "1절",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "밤양갱",
+                        "artist": "비비 (BIBI)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "데레",
+                        "artist": "비비 (BIBI)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "가면무도회",
+                        "artist": "비비 (BIBI)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "나쁜 년 (BIBI Vengeance)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "책방오빠 문학소녀",
+                        "artist": "비비 (BIBI)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "구애",
+                        "artist": "선우정아",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "동거",
+                        "artist": "선우정아",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "도망가자",
+                        "artist": "선우정아",
+                        "category": "인디/힙합",
+                        "difficulty": "어려움",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "보내야 할 때 보낼 수 있을까",
+                        "artist": "소래",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "오늘 취하면",
+                        "artist": "수란",
+                        "category": "인디/힙합",
+                        "difficulty": "1절",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "나성에 가면",
+                        "artist": "심은경",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "달과 6펜스",
+                        "artist": "심규선",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "강",
+                        "artist": "심규선",
+                        "category": "인디/힙합",
+                        "difficulty": "어려움",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "이게 아닌데",
+                        "artist": "아이유 (IU)",
+                        "category": "인디/힙합",
+                        "difficulty": "2절",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "나만 몰랐던 이야기",
+                        "artist": "아이유 (IU)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "복숭아",
+                        "artist": "아이유 (IU)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "하루 끝",
+                        "artist": "아이유 (IU)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "그 애 참 싫다",
+                        "artist": "아이유 (IU)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "누구나 비밀은 있다",
+                        "artist": "아이유 (IU)",
+                        "category": "인디/힙합",
+                        "difficulty": "어려움",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "입술 사이 (50cm)",
+                        "artist": "아이유 (IU)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "Modern Times",
+                        "artist": "아이유 (IU)",
+                        "category": "인디/힙합",
+                        "difficulty": "어려움",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "싫은 날",
+                        "artist": "아이유 (IU)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "Voice Mail",
+                        "artist": "아이유 (IU)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "금요일에 만나요",
+                        "artist": "아이유 (IU)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "봄 사랑 벚꽃 말고",
+                        "artist": "아이유 (IU)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "나의 옛날 이야기",
+                        "artist": "아이유 (IU)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "사랑이 지나가면",
+                        "artist": "아이유 (IU)",
+                        "category": "인디/힙합",
+                        "difficulty": "2절",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "너의 의미",
+                        "artist": "아이유 (IU)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "마음",
+                        "artist": "아이유 (IU)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "스물셋",
+                        "artist": "아이유 (IU)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "푸르던",
+                        "artist": "아이유 (IU)",
+                        "category": "인디/힙합",
+                        "difficulty": "2절",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "무릎",
+                        "artist": "아이유 (IU)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "밤편지",
+                        "artist": "아이유 (IU)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "사랑이 잘",
+                        "artist": "아이유 (IU)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "이 지금",
+                        "artist": "아이유 (IU)",
+                        "category": "인디/힙합",
+                        "difficulty": "어려움",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "이런 엔딩",
+                        "artist": "아이유 (IU)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "마침표",
+                        "artist": "아이유 (IU)",
+                        "category": "인디/힙합",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "이름에게",
+                        "artist": "아이유 (IU)",
+                        "category": "인디/힙합",
+                        "difficulty": "2절",
+                        "key": "?",
+                        "bpm": "?"
+                    },
+                    {
+                        "title": "임의 추가된 곡",
+                        "artist": "AAA",
+                        "key": "?",
+                        "bpm": "?",
+                        "memo": "Dm / 92bpm / 도# , 시, 높은 도# / 브릿지 끝부분 높은 도 잠그기",
+                        "category": "여자 아이돌",
+                        "cheeseTag": "10,000치즈"
+                    }
+                ];
 
             // 노래 데이터에 기본값 및 랜덤 속성 할당
             const songs = allSongsData.map(song => {
@@ -600,7 +1646,6 @@
 </body>
 
 </html>
-
 
 
 
